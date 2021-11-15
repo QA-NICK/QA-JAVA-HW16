@@ -5,39 +5,35 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Issue {
     private boolean opened;
     private String author;
-    private Collection<Label> labels = new HashSet<>();
-    private String assignee;
+    private Set<String> labels = new HashSet<>();
+    private Set<String> assignees = new HashSet<>();
     private int id;
 
     public Issue() {
     }
 
-    public Issue(boolean opened, String author, Collection<Label> labels, String assignee, int id) {
+    public void setLabels(Set<String> labels) {
+        this.labels = labels;
+    }
+
+    public Issue(boolean opened, String author, Set<String> labels, Set<String> assignees, int id) {
         this.opened = opened;
         this.author = author;
         this.labels = labels;
-        this.assignee = assignee;
+        this.assignees = assignees;
         this.id = id;
     }
-
-    public void saveLabel (Label label) {labels.add (label);}
 
     public boolean matchesAuthor(String aut) {
         return author.contains(aut);
 
     }
 
-    public Collection<Label> getLabels() {
-        return labels;
-    }
-
-    public void setLabels(Collection<Label> labels) {
-        this.labels = labels;
-    }
 
     public boolean matchesLabel(String lab) {
         return labels.contains(lab);
@@ -45,7 +41,7 @@ public class Issue {
     }
 
     public boolean matchesAssignee(String as) {
-        return assignee.contains(as);
+        return assignees.contains(as);
 
     }
 
@@ -65,21 +61,17 @@ public class Issue {
         this.author = author;
     }
 
-//    public String getLabel() {
-//        return label;
-//    }
-//
-//    public void setLabel(String label) {
-//        this.label = label;
-//    }
 
-
-    public String getAssignee() {
-        return assignee;
+    public Set<String> getLabels() {
+        return labels;
     }
 
-    public void setAssignee(String assignee) {
-        this.assignee = assignee;
+    public Set<String> getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(Set<String> assignees) {
+        this.assignees = assignees;
     }
 
     public int getId() {
@@ -95,11 +87,12 @@ public class Issue {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Issue issue = (Issue) o;
-        return isOpened() == issue.isOpened() && getId() == issue.getId() && Objects.equals(getAuthor(), issue.getAuthor()) && Objects.equals(getLabels(), issue.getLabels()) && Objects.equals(getAssignee(), issue.getAssignee());
+        return isOpened() == issue.isOpened() && getId() == issue.getId() && Objects.equals(getAuthor(), issue.getAuthor()) && Objects.equals(getLabels(), issue.getLabels()) && Objects.equals(getAssignees(), issue.getAssignees());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(isOpened(), getAuthor(), getLabels(), getAssignee(), getId());
+        return Objects.hash(isOpened(), getAuthor(), getLabels(), getAssignees(), getId());
     }
 }
+

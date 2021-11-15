@@ -13,40 +13,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IssueManagerTest {
     IssueManager manager = new IssueManager(new IssueRepo());
-    IssueRepo repo = new IssueRepo();
-    Issue issue =new Issue();
 
 
+    Set<String> first = new HashSet<>();
+    Set<String> second = new HashSet<>();
+    Set<String> assigneeFirst = new HashSet<>();
+    Set<String> assigneeSecond = new HashSet<>();
 
 
-    Collection<Label> first = new HashSet<>();
-    public void saveLabelFirst (Label label) {first.add (label);}
+    Issue one = new Issue(true, "Petrov", first, assigneeFirst, 1);
 
-    Collection<Label> second =new HashSet<>();
-    public void saveLabelSecond (Label label) {second.add (label);}
-
-    Label labelFirst = new Label("test1");
-    Label labelSecond = new Label("test2");
-    Label labelThird = new Label("test3");
-    Label labelForth = new Label("test4");
-
-
-
-    Issue one = new Issue(true, "Petrov", first,"Ivanov", 1);
-
-    Issue two = new Issue(false, "Petrov", second , "Ivanov", 2);
-    Issue three = new Issue(true, "Belov", second, "Smirnov", 3);
-    Issue four = new Issue(true, "Ivanov", first, "Smirnov", 4);
+    Issue two = new Issue(false, "Petrov", second, assigneeFirst, 2);
+    Issue three = new Issue(true, "Belov", second, assigneeSecond, 3);
+    Issue four = new Issue(true, "Ivanov", first, assigneeSecond, 4);
 
     @BeforeEach
 
 
     public void setUp() {
-        saveLabelFirst(labelFirst);
-        saveLabelFirst(labelThird);
-        saveLabelFirst(labelSecond);
-        saveLabelSecond(labelThird);
-        saveLabelSecond(labelForth);
+        first.add("test1");
+        first.add("test2");
+        second.add("test3");
+        second.add("test4");
+        assigneeFirst.add("Smirnov");
+        assigneeFirst.add("Ivanov");
+        assigneeSecond.add("Vashov");
+
+
         manager.add(one);
         manager.add(two);
         manager.add(three);
@@ -110,7 +103,7 @@ class IssueManagerTest {
 
 
         Issue[] actual = manager.findByLabel("test1");
-        Issue[] expected = new Issue[]{two};
+        Issue[] expected = new Issue[]{one, four};
 
         assertArrayEquals(expected, actual);
 
@@ -120,8 +113,8 @@ class IssueManagerTest {
     @Test
     public void shouldFindByAssignee() {
 
-        Issue[] actual = manager.findByAssignee("Smirnov");
-        Issue[] expected = new Issue[]{three, four};
+        Issue[] actual = manager.findByAssignee("Ivanov");
+        Issue[] expected = new Issue[]{one, two};
 
         assertArrayEquals(expected, actual);
 
