@@ -6,29 +6,51 @@ import ru.netology.domain.Issue;
 import ru.netology.repository.IssueRepo;
 
 
+import java.awt.*;
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class IssueManagerTest {
     IssueManager manager = new IssueManager(new IssueRepo());
     IssueRepo repo = new IssueRepo();
+    Issue issue =new Issue();
 
 
-    Issue one = new Issue(true, "Petrov", "test1", "Ivanov", 1);
-    Issue two = new Issue(false, "Petrov", "test2", "Ivanov", 2);
-    Issue three = new Issue(true, "Belov", "test1", "Smirnov", 3);
-    Issue four = new Issue(true, "Ivanov", "test1", "Smirnov", 4);
+
+
+    Collection<Label> first = new HashSet<>();
+    public void saveLabelFirst (Label label) {first.add (label);}
+
+    Collection<Label> second =new HashSet<>();
+    public void saveLabelSecond (Label label) {second.add (label);}
+
+    Label labelFirst = new Label("test1");
+    Label labelSecond = new Label("test2");
+    Label labelThird = new Label("test3");
+    Label labelForth = new Label("test4");
+
+
+
+    Issue one = new Issue(true, "Petrov", first,"Ivanov", 1);
+
+    Issue two = new Issue(false, "Petrov", second , "Ivanov", 2);
+    Issue three = new Issue(true, "Belov", second, "Smirnov", 3);
+    Issue four = new Issue(true, "Ivanov", first, "Smirnov", 4);
 
     @BeforeEach
 
 
     public void setUp() {
-
+        saveLabelFirst(labelFirst);
+        saveLabelFirst(labelThird);
+        saveLabelFirst(labelSecond);
+        saveLabelSecond(labelThird);
+        saveLabelSecond(labelForth);
         manager.add(one);
         manager.add(two);
         manager.add(three);
         manager.add(four);
-
-
     }
 
 
@@ -86,7 +108,8 @@ class IssueManagerTest {
     @Test
     public void shouldFindByLabel() {
 
-        Issue[] actual = manager.findByLabel("test2");
+
+        Issue[] actual = manager.findByLabel("test1");
         Issue[] expected = new Issue[]{two};
 
         assertArrayEquals(expected, actual);

@@ -30,13 +30,6 @@ public class IssueRepo {
         }
         return null;
     }
-
-//    private Collection<Issue> labels = new HashSet();
-//
-//    public void saveLabel(Issue label) {
-//        labels.add(label);
-//    }
-
-
 }
+
 
